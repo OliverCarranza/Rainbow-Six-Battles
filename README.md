@@ -1,2 +1,5 @@
 # Rainbow-Six-Battles
- Mobile Game Programming Final Project
+Mobile Game Programming Final Project
+
+This project is for Game Programming 2024 and begins 2/8/2024. Main Contributors are Oliver Carranza, Major Andrews, and Josiah Matthews.
+We want to recreate the game plants vs. zombies but use characters from the game Rainbow Six Seige.
