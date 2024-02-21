@@ -3,7 +3,7 @@ package com.example.rainbow_six_battles;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-
+//JOWJSD
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
