@@ -62,7 +62,6 @@ public class MainActivity extends Engine {
 
     Rect[] molePos;
 
-    SoundPool soundPool = null; //wednesday
     HashMap<Integer, Integer> soundPoolMap;
 
 
@@ -80,7 +79,7 @@ public class MainActivity extends Engine {
         mole = null;
         molePos = new Rect[7];
         maskPos = new Rect[7];
-        random = new Random(); //monday
+        random = new Random();
 
     }
 
@@ -91,18 +90,12 @@ public class MainActivity extends Engine {
         rect = new Rect();
         rect.left = 0;
         rect.top = 0;
-        rect.right = getScreenWidth(); // Engine methods
+        rect.right = getScreenWidth();
         rect.bottom = getScreenHeight();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //Wednesday
-
-
-
-
-        //setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -120,17 +113,6 @@ public class MainActivity extends Engine {
         moleSpeed = -20;
         initMoleHeight = 0;
 
-
-
-
-        // positions for each of the maskpos
-        createMaskPos(0, 0, 0);
-        createMaskPos(1, 150, 403);
-        createMaskPos(2, 250, 453);
-        createMaskPos(3, 350, 403);
-        createMaskPos(4, 455, 453);
-        createMaskPos(5, 555, 403);
-        createMaskPos(6, 655, 453);
     }
 
     @Override
@@ -140,7 +122,7 @@ public class MainActivity extends Engine {
         title = new Sprite(this);
         titleImage = new Texture(this);
 
-        if (!titleImage.loadFromAsset("images/Start.jpg")) {
+        if (!titleImage.loadFromAsset("GamePics/Start.jpg")) {
             fatalError("Error Loading Title Image");
         }
 
@@ -160,7 +142,7 @@ public class MainActivity extends Engine {
         mole = new Sprite(this);
         moleImage = new Texture(this);
 
-        if (!moleImage.loadFromAsset("GamePics/mole.png")) {
+        if (!moleImage.loadFromAsset("GamePics/Background.jpg")) {
             fatalError("Error Loading Mole Image");
         }
 
@@ -170,7 +152,7 @@ public class MainActivity extends Engine {
         mask = new Sprite(this);
         maskImage = new Texture(this);
 
-        if (!maskImage.loadFromAsset("images/mask.png")) {
+        if (!maskImage.loadFromAsset("GamePics/mask.png")) {
             fatalError("Error Loading Title Image");
         }
 
@@ -201,17 +183,6 @@ public class MainActivity extends Engine {
                 newMole = true;
             }
 
-            molePos[curMole].top += moleSpeed;
-            molePos[curMole].bottom += moleSpeed;
-
-            /*mole.draw(molePos[0]);
-            mole.draw(molePos[1]);
-            mole.draw(molePos[2]);
-            mole.draw(molePos[3]);
-            mole.draw(molePos[4]);
-            mole.draw(molePos[5]);
-            mole.draw(molePos[6]);
-            */
 
             for (int i = 0; i < maskPos.length; i++) {
                 mole.draw(molePos[i]);
@@ -239,7 +210,7 @@ public class MainActivity extends Engine {
                     if (molePos[i].contains(touch.x, touch.y) &&
                             !maskPos[i].contains(touch.x, touch.y)) {
 
-                        playSound(1);
+
                         moleHit = true;
                         break;
                     }
@@ -252,20 +223,9 @@ public class MainActivity extends Engine {
         }
     }
 
-    private void playSound(int soundId) {
-        soundPool.play(soundId, 1f, 1f, 1, 0, 1f);
     }
 
-    public void createMaskPos(int index, int x, int y) {
-        float scaleW = (float) screenWidth / imageW;
-        float scaleH = (float) screenHeight / imageH;
 
-        maskPos[index] = new Rect();
-        maskPos[index].top = (int)(y * scaleH);
-        maskPos[index].left = (int)(x * scaleW);
-        maskPos[index].bottom = maskPos[index].top + MASK_HEIGHT;
-        maskPos[index].right = maskPos[index].left + MASK_WIDTH;
 
-    }
 
-}
+
