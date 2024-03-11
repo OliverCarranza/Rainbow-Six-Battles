@@ -17,7 +17,7 @@ import android.view.WindowManager;
 import java.util.HashMap;
 import java.util.Random;
 
-public class MainActivity extends Engine{
+public class MainActivity extends Engine {
     // member (class) variables
     public static final int imageW = 800;
     public static final int imageH = 600;
@@ -100,6 +100,8 @@ public class MainActivity extends Engine{
         //Wednesday
 
 
+
+
         //setContentView(R.layout.activity_main);
     }
 
@@ -118,47 +120,6 @@ public class MainActivity extends Engine{
         moleSpeed = -20;
         initMoleHeight = 0;
 
-        molePos[0] = new Rect();
-        molePos[0].top = (int)(466 * scaleH);
-        molePos[0].left = (int)(70 * scaleW);
-        molePos[0].bottom = molePos[0].top + MOLE_HEIGHT;
-        molePos[0].right = molePos[0].left + MOLE_WIDTH;
-
-        molePos[1] = new Rect();
-        molePos[1].top = (int)(417 * scaleH);
-        molePos[1].left = (int)(170 * scaleW);
-        molePos[1].bottom = molePos[1].top + MOLE_HEIGHT;
-        molePos[1].right = molePos[1].left + MOLE_WIDTH;
-
-        molePos[2] = new Rect();
-        molePos[2].top = (int)(466 * scaleH);
-        molePos[2].left = (int)(270 * scaleW);
-        molePos[2].bottom = molePos[2].top + MOLE_HEIGHT;
-        molePos[2].right = molePos[2].left + MOLE_WIDTH;
-
-        molePos[3] = new Rect();
-        molePos[3].top = (int)(417 * scaleH);
-        molePos[3].left = (int)(370 * scaleW);
-        molePos[3].bottom = molePos[3].top + MOLE_HEIGHT;
-        molePos[3].right = molePos[3].left + MOLE_WIDTH;
-
-        molePos[4] = new Rect();
-        molePos[4].top = (int)(466 * scaleH);
-        molePos[4].left = (int)(475 * scaleW);
-        molePos[4].bottom = molePos[4].top + MOLE_HEIGHT;
-        molePos[4].right = molePos[4].left + MOLE_WIDTH;
-
-        molePos[5] = new Rect();
-        molePos[5].top = (int)(417 * scaleH);
-        molePos[5].left = (int)(575 * scaleW);
-        molePos[5].bottom = molePos[5].top + MOLE_HEIGHT;
-        molePos[5].right = molePos[5].left + MOLE_WIDTH;
-
-        molePos[6] = new Rect();
-        molePos[6].top = (int)(466 * scaleH);
-        molePos[6].left = (int)(475 * scaleW);
-        molePos[6].bottom = molePos[6].top + MOLE_HEIGHT;
-        molePos[6].right = molePos[6].left + MOLE_WIDTH;
 
 
 
@@ -179,7 +140,7 @@ public class MainActivity extends Engine{
         title = new Sprite(this);
         titleImage = new Texture(this);
 
-        if (!titleImage.loadFromAsset("GamePics/Start.jpg")) {
+        if (!titleImage.loadFromAsset("images/Start.jpg")) {
             fatalError("Error Loading Title Image");
         }
 
@@ -189,7 +150,7 @@ public class MainActivity extends Engine{
         background = new Sprite(this);
         backgroundImage = new Texture(this);
 
-        if (!backgroundImage.loadFromAsset("images/background.png")) {
+        if (!backgroundImage.loadFromAsset("GamePics/Start.png")) {
             fatalError("Error Loading Background Image");
         }
 
@@ -199,7 +160,7 @@ public class MainActivity extends Engine{
         mole = new Sprite(this);
         moleImage = new Texture(this);
 
-        if (!moleImage.loadFromAsset("images/mole.png")) {
+        if (!moleImage.loadFromAsset("GamePics/mole.png")) {
             fatalError("Error Loading Mole Image");
         }
 
@@ -208,6 +169,13 @@ public class MainActivity extends Engine{
 
         mask = new Sprite(this);
         maskImage = new Texture(this);
+
+        if (!maskImage.loadFromAsset("images/mask.png")) {
+            fatalError("Error Loading Title Image");
+        }
+
+        mask.setTexture(maskImage);
+        mask.position = new Point(0,0);
 
 
     }

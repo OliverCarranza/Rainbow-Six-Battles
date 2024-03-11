@@ -131,6 +131,7 @@ public abstract class Engine extends Activity implements Runnable,
     public void run() {
         Log.d("Engine","Engine.run start");
 
+        Timer frameTimer = new Timer();
         int frameCount=0;
         int frameRate=0;
         long startTime=0;
@@ -146,7 +147,15 @@ public abstract class Engine extends Activity implements Runnable,
             /**
              * Calculate frame rate
              */
+            frameCount++;
+            startTime = frameTimer.getElapsed();
+            if (frameTimer.stopwatch(1000)) {
+                frameRate = frameCount;
+                frameCount = 0;
 
+                //reset touch input count
+                p_numPoints = 0;
+            }
 
 
             /**
@@ -185,6 +194,7 @@ public abstract class Engine extends Activity implements Runnable,
             /**
              * Calculate frame update time and sleep if necessary.
              */
+            timeDiff = frameTimer.getElapsed() - startTime;
             long updatePeriod = p_sleepTime - timeDiff;
             if (updatePeriod > 0) {
                 try {

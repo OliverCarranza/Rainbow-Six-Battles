@@ -1,5 +1,4 @@
 package com.example.rainbow_six_battles;
-
 //  Enter package name here
 
 import java.io.IOException;
