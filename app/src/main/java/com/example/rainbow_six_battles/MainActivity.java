@@ -57,8 +57,7 @@ public class MainActivity extends Engine {
         paint = new Paint();
         touch = new Point(0, 0);
         images = null;
-        random = new Random(); //monday
-
+        random = new Random();
     }
 
     @Override
@@ -105,7 +104,8 @@ public class MainActivity extends Engine {
         background = new Sprite(this);
         backgroundImage = new Texture(this);
 
-        if (!backgroundImage.loadFromAsset("GamePics/pickCharacter.jpg")) {
+        //Directory for images inside of Assets folder
+        if (!backgroundImage.loadFromAsset("GamePics/pickCharacter.png")) {
             fatalError("Error Loading Background Image");
         }
 

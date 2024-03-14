@@ -6,7 +6,6 @@ import android.view.View;
 
 public class Map extends View implements View.OnTouchListener {
 
-
     public Map(Context context) {
         super(context);
     }
