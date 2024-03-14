@@ -95,7 +95,7 @@ public class MainActivity extends Engine {
 
         titleImage = new Texture(this);
 
-        if (!titleImage.loadFromAsset("GamePics/Start.jpg")) {
+        if (!titleImage.loadFromAsset("GamePics/tapToStart.png")) {
             fatalError("Error Loading Title Image");
         }
 
@@ -105,7 +105,7 @@ public class MainActivity extends Engine {
         background = new Sprite(this);
         backgroundImage = new Texture(this);
 
-        if (!backgroundImage.loadFromAsset("GamePics/Start.jpg")) {
+        if (!backgroundImage.loadFromAsset("GamePics/pickCharacter.jpg")) {
             fatalError("Error Loading Background Image");
         }
 
