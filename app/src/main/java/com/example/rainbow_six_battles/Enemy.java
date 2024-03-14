@@ -1,7 +1,6 @@
 package com.example.rainbow_six_battles;
 
 public class Enemy {
-
     private int health;
     private int bps;
     private int cost;
