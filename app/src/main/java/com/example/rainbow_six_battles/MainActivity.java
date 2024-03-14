@@ -1,14 +1,9 @@
 package com.example.rainbow_six_battles;
 
-import static android.media.AudioManager.STREAM_MUSIC;
-
-import  androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,7 +89,7 @@ public class MainActivity extends Engine {
 
         titleImage = new Texture(this);
 
-        if (!titleImage.loadFromAsset("GamePics/tapToStart.png")) {
+        if (!titleImage.loadFromAsset("GamePics/LoadingScreens/tapToStart.png")) {
             fatalError("Error Loading Title Image");
         }
 
@@ -105,7 +100,7 @@ public class MainActivity extends Engine {
         backgroundImage = new Texture(this);
 
         //Directory for images inside of Assets folder
-        if (!backgroundImage.loadFromAsset("GamePics/pickCharacter.png")) {
+        if (!backgroundImage.loadFromAsset("GamePics/LoadingScreens/pickCharacter.png")) {
             fatalError("Error Loading Background Image");
         }
 
