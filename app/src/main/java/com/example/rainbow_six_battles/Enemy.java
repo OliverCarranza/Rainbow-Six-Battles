@@ -15,17 +15,12 @@ public class Enemy {
     private int x;
     private int y;
 
-    public Enemy(int health, int bps, int cost, int recharge, String name, GameView gv, Bitmap bp, int x, int y){
-        this.health = health;
-        this.bps = bps;
-        this.cost = cost;
-        this.name = name;
-        this.recharge = recharge;
+    public Enemy(GameView gv, Bitmap bp, int x, int y){
+        this.health = 3;
         this.gameView = gv;
         this.bmp = bp;
         this.x = x;
         this.y = y;
-        this.width = bmp.getWidth();
     }
 
     private void update() {

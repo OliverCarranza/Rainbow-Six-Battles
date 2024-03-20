@@ -1,5 +1,14 @@
 package com.example.rainbow_six_battles;
+/*
+Author: Oliver Carranza
+Date: 3/20/2024
+Purpose: This file will have a backenemyList image where you have a (defenders) sprite that will
+        only move up or down. Enemy Sprites will also be moving from right to left.
+        If the enemy sprites reach the end, then game ends.
+        The defenders only have 2 minutes to survive till they win.
 
+
+ */
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,19 +44,16 @@ import java.util.Random;
 
 
 public class GameView extends SurfaceView {
-    public static int globalxSpeed = 8;
+    public static int globalxSpeed = 8; //changes speed of enemy sprite
     int xx = 0;
 
-    int coinxx = 50;
     private GameLoopThread gameLoopThread;
     private SurfaceHolder holder;
 
-    Bitmap groundBmp;
-    Bitmap coinBmp;
-    private List<Ground> ground = new ArrayList<Ground>();
-    private List<Coin> coin = new ArrayList<Coin>();
+    Bitmap enemybpm;
+    private List<Enemy> enemyList = new ArrayList<Enemy>();
 
-    public GameView(Context context, ) {
+    public GameView(Context context) {
         super(context);
 
 
@@ -73,66 +79,37 @@ public class GameView extends SurfaceView {
 
             }
         });
-
-        groundBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ground);
-        coinBmp = BitmapFactory.decodeResource(getResources(), R.drawable.coin);
+        
+        enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.ash_gun);
 
     }
 
     public void update() {
-        deleteGround();
-        deleteCoin();
+        deleteEnemy();
     }
     public void addGround(){
 
-        while (xx < this.getWidth() + Ground.width){
-            ground.add(new Ground(this, groundBmp, xx, 0));
+        while (xx < this.getWidth() + Enemy.width){
+            enemyList.add(new Enemy(this, enemybpm, xx, 0));
 
-            xx += groundBmp.getWidth();
+            xx += enemybpm.getWidth();
         }
     }
 
-    public void deleteGround(){
+    public void deleteEnemy(){
         int i = -1;
         try{
-            for(i = ground.size(); i >= 0; i--){
-                int groundX = ground.get(i-1).getX();
+            for(i = enemyList.size(); i >= 0; i--){
+                int enemyListX = enemyList.get(i-1).getX();
 
-                if(groundX < -Ground.width){
-                    ground.remove(i-1);
-                    ground.add(new Ground(this, groundBmp,
-                            groundX + this.getWidth() + Ground.width, 0));
+                if(enemyListX < - Enemy.width){
+                    enemyList.remove(i-1);
+                    enemyList.add(new Enemy(this, enemybpm, + this.getWidth() + Enemy.width, 0));
                 }
             }
         } catch (Exception ex){
             Log.d("deleteGround", "Error found-" + i + ".  " + ex.toString()
-                    + ".  Ground Size = " + ground.size());
-        }
-    }
-
-    public void addCoin(){
-        while(coinxx < this.getWidth()+  Coin.width){
-            coin.add(new Coin(this, coinBmp, coinxx, 800));
-            coinxx += coinBmp.getWidth();
-        }
-    }
-    public void deleteCoin(){
-        int i = -1;
-        Random rand = new Random();
-        int r = rand.nextInt(2000-1000);
-        try{
-            for(i = coin.size(); i >= 0; i--){
-                int coinX = coin.get(i-1).getX();
-
-                if(coinX < -Coin.width){
-                    coin.remove(i-1);
-                    coin.add(new Coin(this, coinBmp,
-                            coinX + this.getWidth() + Coin.width, r ));
-                }
-            }
-        } catch (Exception e){
-            Log.d("d", "Error found-" + i + ".  " + e.toString()
-                    + ".  coin Size = " + coin.size());
+                    + ".  Ground Size = " + enemyList.size());
         }
     }
 
@@ -142,18 +119,12 @@ public class GameView extends SurfaceView {
         update();
         canvas.drawColor(Color.CYAN);
         addGround();
-        addCoin();
 
         Paint textPaint = new Paint();
         textPaint.setTextSize(32);
 
-        for (Ground gground : ground) {
-            gground.onDraw(canvas);
-        }
-
-
-        for (Coin c : coin) {
-            c.onDraw(canvas);
+        for (Enemy genemyList : enemyList) {
+            genemyList.onDraw(canvas);
         }
 
     }
