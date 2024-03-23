@@ -117,7 +117,7 @@ public class GameView extends SurfaceView {
         super.draw(canvas);
 
         update();
-        canvas.drawColor(Color.CYAN);
+        canvas.drawColor(Color.RED);
         addGround();
 
         Paint textPaint = new Paint();
