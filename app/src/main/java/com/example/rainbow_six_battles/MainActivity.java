@@ -160,13 +160,13 @@ public class MainActivity extends Engine {
                     if (x > 400 && x < 800 && y > 900 && y < 260) {
                         /* Trigger your action here */
                         canvas.drawRect(400,260,800, 900, paint);  //ash touch-zone rect
+
                         levelMode = true;
                     }
-
-
                 //add in click code then new GameView
             } else {
                 //titleMode = false;
+
             }
         }
 
