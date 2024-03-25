@@ -3,6 +3,8 @@ package com.example.rainbow_six_battles;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.util.Random;
+
 public class Enemy {
     private int health;
     private int bps; //bullets per second
@@ -14,6 +16,8 @@ public class Enemy {
     private Bitmap bmp;
     private int x;
     private int y;
+    Random randomNumber;
+    private int ls;
 
     public Enemy(GameView gv, Bitmap bp, int x, int y){
         this.health = 3;
@@ -21,6 +25,7 @@ public class Enemy {
         this.bmp = bp;
         this.x = x;
         this.y = y;
+        this.randomNumber =  new Random();
     }
 
     private void update() {
@@ -34,7 +39,8 @@ public class Enemy {
 
     public void onDraw(Canvas c){
         update();
-        c.drawBitmap(bmp, x, y + gameView.getHeight() - 500, null);
+        ls = randomNumber.nextInt(601);
+        c.drawBitmap(bmp, x, y + gameView.getHeight() - ls, null);
     }
 
 

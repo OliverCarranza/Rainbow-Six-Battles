@@ -73,7 +73,7 @@ public class GameView extends SurfaceView {
             }
         });
         //drawing of ash in resting position
-        enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.ash_gun);
+        enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
 
     }
 
@@ -88,27 +88,20 @@ public class GameView extends SurfaceView {
         }
     }
 
-    public void deleteEnemy(){ // removes enemy from map by removing the enemy from enemyList
-        int i = -1;
-        try{
-            for(i = enemyList.size(); i >= 0; i--){
-                int enemyListX = enemyList.get(i-1).getX(); // grabs enemy x position
-
-                if(enemyListX < - Enemy.width){
-                    enemyList.remove(i-1); // removes enemy
-                    enemyList.add(new Enemy(this, enemybpm, + this.getWidth() + Enemy.width, 0)); // adds new enemy
-                }
+    public void deleteEnemy() {
+        for (int i = 0; i < enemyList.size(); i++) {
+            int enemyListX = enemyList.get(i).getX();
+            if (enemyListX < -Enemy.width) {
+                enemyList.remove(i);
+                enemyList.add(new Enemy(this, enemybpm, this.getWidth() + Enemy.width, 0));
+                break; // Early exit after removing an enemy
             }
-        } catch (Exception ex){ // error handling
-            Log.d("deleteGround", "Error found-" + i + ".  " + ex.toString()
-                    + ".  Ground Size = " + enemyList.size());
         }
     }
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
         update(); // updates
-        canvas.drawColor(Color.RED); // draw color red
         addGround(); // adds enemy to ground
 
         Paint textPaint = new Paint();

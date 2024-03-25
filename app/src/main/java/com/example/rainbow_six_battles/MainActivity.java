@@ -41,7 +41,6 @@ public class MainActivity extends Engine {
     private boolean characterMode;
     private boolean levelMode;
 
-
     Point touch;
 
     //Texture images;
@@ -64,7 +63,7 @@ public class MainActivity extends Engine {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(new GameView(this));
         //SETS UP FRAMING for images
         rect = new Rect();
         rect.left = 0;
