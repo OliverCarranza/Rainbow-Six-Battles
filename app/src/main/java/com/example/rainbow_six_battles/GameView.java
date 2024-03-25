@@ -80,22 +80,30 @@ public class GameView extends SurfaceView {
     public void update() { // updates the screen after event
         deleteEnemy();
     }
-    public void addGround(){ // adds enemy to map
-        // will continuously add an enemy to the map
-        while (xx < this.getWidth() + Enemy.width){
-            enemyList.add(new Enemy(this, enemybpm, xx, 0));
+    public void addGround(){
+        while(xx < this.getWidth() + Enemy.width){
+            enemyList.add(new Enemy(this, enemybpm, xx, 500));
+
             xx += enemybpm.getWidth();
         }
     }
+    public void deleteEnemy(){
+        int i = -1;
+        Random rand = new Random();
+        int r = rand.nextInt();
+        try{
+            for(i = enemyList.size(); i >= 0; i--){
+                int coinX = enemyList.get(i-1).getX();
 
-    public void deleteEnemy() {
-        for (int i = 0; i < enemyList.size(); i++) {
-            int enemyListX = enemyList.get(i).getX();
-            if (enemyListX < -Enemy.width) {
-                enemyList.remove(i);
-                enemyList.add(new Enemy(this, enemybpm, this.getWidth() + Enemy.width, 0));
-                break; // Early exit after removing an enemy
+                if(coinX < - Enemy.width){
+                    enemyList.remove(i-1);
+                    enemyList.add(new Enemy(this, enemybpm,
+                            coinX + this.getWidth() + Enemy.width, -rand.nextInt(600) - 10 )); //changes range and spots that the enemy appears
+                }
             }
+        }catch (Exception ex){
+            Log.d("deleteGround", "Error found-" + i + ".  " + ex.toString()
+                    + ".  Ground Size = " + enemyList.size());
         }
     }
 

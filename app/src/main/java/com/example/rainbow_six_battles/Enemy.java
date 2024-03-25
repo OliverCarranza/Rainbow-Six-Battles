@@ -40,7 +40,7 @@ public class Enemy {
     public void onDraw(Canvas c){
         update();
         ls = randomNumber.nextInt(601);
-        c.drawBitmap(bmp, x, y + gameView.getHeight() - ls, null);
+        c.drawBitmap(bmp, x, y + gameView.getHeight() - 400, null);
     }
 
 
