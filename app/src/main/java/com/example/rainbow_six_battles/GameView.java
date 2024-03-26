@@ -48,6 +48,7 @@ public class GameView extends SurfaceView {
     private Timer times;
 
     Bitmap enemybpm; //how fast the enemy moves
+    Bitmap level1;
     private List < Enemy > enemyList = new ArrayList < Enemy > (); // any enemies in the screen that has to be spawned or is spawned
 
     public GameView(Context context) {
@@ -72,7 +73,7 @@ public class GameView extends SurfaceView {
         });
         //drawing of sledge in hammer position
         enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
-
+        level1 = BitmapFactory.decodeResource(getResources(), R.drawable.background);
     }
 
     public void update() { // updates the screen after event
@@ -109,6 +110,9 @@ public class GameView extends SurfaceView {
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
+        canvas.drawBitmap(level1, 0,0, new Paint());
+
         update(); // updates
         addGround(); // adds enemy to ground
         Log.d("t", "Current Time elapsed " + times.getElapsed());
