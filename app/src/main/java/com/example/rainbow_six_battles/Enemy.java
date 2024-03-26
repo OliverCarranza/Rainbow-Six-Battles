@@ -19,13 +19,13 @@ public class Enemy {
     Random randomNumber;
     private int ls;
 
-    public Enemy(GameView gv, Bitmap bp, int x, int y){
+    public Enemy(GameView gv, Bitmap bp, int x, int y) {
         this.health = 3;
         this.gameView = gv;
         this.bmp = bp;
         this.x = x;
         this.y = y;
-        this.randomNumber =  new Random();
+        this.randomNumber = new Random();
     }
 
     private void update() {
@@ -37,11 +37,10 @@ public class Enemy {
         return x;
     }
 
-    public void onDraw(Canvas c){
+    public void onDraw(Canvas c) {
         update();
         ls = randomNumber.nextInt(601);
-        c.drawBitmap(bmp, x, y + gameView.getHeight() - 400, null);
+        c.drawBitmap(bmp, x, y + gameView.getHeight() - 800, null);
     }
-
 
 }

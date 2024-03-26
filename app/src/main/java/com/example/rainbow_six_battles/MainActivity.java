@@ -37,20 +37,16 @@ public class MainActivity extends Engine {
     Paint paint;
     Rect rect;
 
-    boolean titleMode = true;   //default screen
+    boolean titleMode = true; //default screen
     private boolean characterMode;
     private boolean levelMode;
-
     Point touch;
 
-    //Touch point rects
-    Rect ashSelect;
-    Rect buckSelect;
-    Rect oryxSelect;
+    //Texture images;
 
     //Sound stuff
     SoundPool soundPool = null;
-    HashMap<Integer, Integer> soundPoolMap;
+    HashMap < Integer, Integer > soundPoolMap;
 
     public MainActivity() {
         title = null;
@@ -66,8 +62,7 @@ public class MainActivity extends Engine {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(new GameView(this));
-
+        setContentView(new GameView(this));
         //SETS UP FRAMING for images
         rect = new Rect();
         rect.left = 0;
@@ -79,7 +74,7 @@ public class MainActivity extends Engine {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
-        soundPoolMap = new HashMap<Integer, Integer>();
+        soundPoolMap = new HashMap < Integer, Integer > ();
         //soundPoolMap.put(0, soundPool.load(this, R.raw.thememusic, 1));
 
     }
@@ -105,7 +100,6 @@ public class MainActivity extends Engine {
         title.setTexture(titleImage);
         title.position = new Point(0, 0);
 
-
         //old background
         characters = new Sprite(this);
         charactersImg = new Texture(this);
@@ -116,7 +110,6 @@ public class MainActivity extends Engine {
 
         characters.setTexture(charactersImg);
         characters.position = new Point(0, 0);
-
 
         //CHARACTER
         level = new Sprite(this);
@@ -139,12 +132,11 @@ public class MainActivity extends Engine {
         if (titleMode) {
             title.draw(rect);
         } else if (characterMode) {
-            characters.draw(rect);  //insert new var that will do character select mode
-
-            ashSelect = new Rect(400,260,800, 900);  //ash touch-zone rect
-            buckSelect = new Rect(950,260,1350, 900);  //buck touch-zone rect
-            oryxSelect = new Rect(1450,260,1900, 900);  //Oryx touch-zone rect
-        } else if (levelMode){
+            characters.draw(rect); //insert new var that will do character select mode
+            canvas.drawRect(400, 260, 800, 900, paint); //ash touch-zone rect
+            canvas.drawRect(950, 260, 1350, 900, paint); //buck touch-zone rect
+            canvas.drawRect(1450, 260, 1900, 900, paint); //Oryx touch-zone rect
+        } else if (levelMode) {
             level.draw(rect);
         }
     }
@@ -157,35 +149,23 @@ public class MainActivity extends Engine {
                 titleMode = false;
                 characterMode = true;
 
-            } else if(characterMode) {
                 int x = touch.x;
                 int y = touch.y;
-
-                if (ashSelect.contains(x, y)) {  // if else if
-
+                if (x > 400 && x < 800 && y > 900 && y < 260) {
                     /* Trigger your action here */
+                    canvas.drawRect(400, 260, 800, 900, paint); //ash touch-zone rect
 
-                    //setContentView(new GameView(this));
-                    Log.d("Character mode", "Selected ash char");
-                } else if (buckSelect.contains(x,y)){
-                    //setContentView(new GameView(this));
-                    Log.d("Character mode", "Selected buck char");
-                } else if (oryxSelect.contains(x,y)){
-                    //setContentView(new GameView(this));
-                    Log.d("Character mode", "Selected ORYX CHAR");
+                    levelMode = true;
                 }
                 //add in click code then new GameView
+            } else {
+                //titleMode = false;
             }
-
-
-
         }
-
     }
 
-
     private void playSound(int soundId) {
-        soundPool.play(soundId, 1f, 1f, 1, 0, 1f);
+        soundPool.play(soundId, 1, 1, 1, 0, 1);
     }
 
 }

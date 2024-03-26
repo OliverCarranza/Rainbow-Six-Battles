@@ -1,7 +1,5 @@
 package com.example.rainbow_six_battles;
 
-//  Enter package name here
-
 public class Timer {
     private long p_start;
     private long p_stopwatchStart;
@@ -19,7 +17,7 @@ public class Timer {
         long start = getElapsed();
         while (start + ms > getElapsed()) {
             try {
-                Thread.sleep( 1 );
+                Thread.sleep(1);
             } catch (InterruptedException e) {}
         }
     }
@@ -32,10 +30,8 @@ public class Timer {
         if (getElapsed() > p_stopwatchStart + ms) {
             resetStopwatch();
             return true;
-        }
-        else
+        } else
             return false;
     }
-
 
 }
