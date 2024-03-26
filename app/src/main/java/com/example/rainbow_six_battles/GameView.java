@@ -49,15 +49,21 @@ public class GameView extends SurfaceView {
 
     Bitmap enemybpm; //how fast the enemy moves
     Bitmap level1;
+    Bitmap endImage;
+
+    int screenWidth;
+    int screenHeight;
     private List < Enemy > enemyList = new ArrayList < Enemy > (); // any enemies in the screen that has to be spawned or is spawned
 
-    public GameView(Context context) {
+    public GameView(Context context, int screenWidth, int screenHeight) {
         super(context); // calling parent
+        //drawBackground();
         gameLoopThread = new GameLoopThread(this); //new gameloop passing in Gameview
 
         times = new Timer();
         Log.d("nt", "TIME BEGGING is " + times.getElapsed());
-
+        this.screenHeight = screenHeight;
+        this.screenWidth = screenWidth;
         holder = getHolder();
         holder.addCallback(new Callback() {
             // called to start game
@@ -73,7 +79,14 @@ public class GameView extends SurfaceView {
         });
         //drawing of sledge in hammer position
         enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
-        level1 = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        level1 = BitmapFactory.decodeResource(getResources(), R.drawable.level1);
+        endImage = BitmapFactory.decodeResource(getResources(), R.drawable.winning_screen);
+        try {
+            level1.setWidth(screenWidth);
+            level1.setHeight(screenHeight);
+        } catch(Exception a){
+            Log.d("imgB", "Error Setting Width and Height for background Image");
+        }
     }
 
     public void update() { // updates the screen after event
@@ -98,8 +111,7 @@ public class GameView extends SurfaceView {
 
                 if (coinX < -Enemy.width) {
                     enemyList.remove(i - 1);
-                    enemyList.add(new Enemy(this, enemybpm,
-                            coinX + this.getWidth() + Enemy.width, r));
+                    enemyList.add(new Enemy(this, enemybpm,coinX + this.getWidth() + Enemy.width, r));
                 }
             }
         } catch (Exception e) {
@@ -108,15 +120,26 @@ public class GameView extends SurfaceView {
         }
     }
 
+
+
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
-        canvas.drawBitmap(level1, 0,0, new Paint());
-
         update(); // updates
+        if(times.getElapsed() > 100) {
+            canvas.drawBitmap(level1, 0, 0, new Paint());
+        }
         addGround(); // adds enemy to ground
         Log.d("t", "Current Time elapsed " + times.getElapsed());
-        checkTime();
+        if(checkTime()){ //Checks time if it is more than alloted, will display the end winning screen.
+            try {
+                endImage.setWidth(screenWidth);
+                endImage.setHeight(screenHeight);
+            } catch(Exception a){
+                Log.d("imgB", "Error Setting Width and Height for End Game Image");
+            }
+            endGame();
+            canvas.drawBitmap(endImage, 0, 0, new Paint());
+        }
         Paint textPaint = new Paint();
         textPaint.setTextSize(32);
 
@@ -127,11 +150,17 @@ public class GameView extends SurfaceView {
     }
     // Checks if time is greater than or equal to certain milliseconds and if so,
     // then closes game.
-    private void checkTime() {
+    private boolean checkTime() {
         if (times.getElapsed() >= 10000) { // change time to desired length, 1,000 milli is 1 second
             Log.d("cl", "Close Game, time  is up : " + times.getElapsed());
-            System.exit(0);
+            //System.exit(0);
+            return true; // reached the time limit
         }
+        return false;//means that it still has not reached the time limit
+    }
+
+    private void endGame(){
+        // sledge remove by setting array to 0;
     }
 
 }
