@@ -61,7 +61,7 @@ public class GameView extends SurfaceView {
         gameLoopThread = new GameLoopThread(this); //new gameloop passing in Gameview
 
         times = new Timer();
-        Log.d("nt", "TIME BEGGING is " + times.getElapsed());
+        Log.d("new_time", "TIME BEGGING is " + times.getElapsed());
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
         holder = getHolder();

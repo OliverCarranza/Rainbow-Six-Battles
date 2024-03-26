@@ -153,24 +153,13 @@ public class MainActivity extends Engine {
         charactersImg = new Texture(this);
 
         if (!charactersImg.loadFromAsset("GamePics/LoadingScreens/pickCharacter.png")) {
-            fatalError("Error Loading Background Image");
+            fatalError("Error Loading Pick Character Image");
         }
 
         //characters sprite gains its texture image background like other sprites above
         characters.setTexture(charactersImg);
         characters.position = new Point(0, 0);
 
-        //level1 sprtie for debug purposes
-        level = new Sprite(this);
-        levelImg = new Texture(this);
-
-        //Directory for images inside of Assets folder
-        if (!levelImg.loadFromAsset("drawable/level1.png")) {
-            fatalError("Error Loading Background Image");
-        }
-
-        level.setTexture(levelImg);
-        level.position = new Point(0, 0);
     }
 
     //Draw function to override super class call to draw things on the screen output
