@@ -15,10 +15,14 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -218,21 +222,21 @@ public class MainActivity extends Engine {
                     //the thread will only properly activate with this runnable code in each statement below
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this));    //call to new gameview1
+                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview1
                         }
                     });
                     Log.d("Character mode", "Not CALLING GAME VIEW ash char");
                 } else if (buckSelect.contains(x, y)) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this));    //call to new gameview2
+                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview2
                         }
                     });
                     Log.d("Character mode", "Selected buck character");
                 } else if (oryxSelect.contains(x, y)) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this));    //call to new gameview3
+                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview3
                         }
                     });
                     Log.d("Character mode", "Selected oryx CHARACTER");
