@@ -1,5 +1,5 @@
 /*
- - Names: Major Andrews, Oliver Carranza, Major Andrews
+ - Names: Major Andrews, Oliver Carranza, Josiah Mathews
  - Using GitHub Repository to work collaboratively and share code, images, media, and files with each other.
  - Main Activity Java file that starts the game and guides the user into the start of gameplay levels.
  - This code and documentation meet the requirements for this Mobile Final Project.
@@ -15,14 +15,10 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -165,7 +161,7 @@ public class MainActivity extends Engine {
         levelImg = new Texture(this);
 
         //Directory for images inside of Assets folder
-        if (!levelImg.loadFromAsset("GamePics/GameLevels/level1.png")) {
+        if (!levelImg.loadFromAsset("drawable/level1.png")) {
             fatalError("Error Loading Background Image");
         }
 

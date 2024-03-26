@@ -1,8 +1,13 @@
-package com.example.rainbow_six_battles;
 /*
-Author: Oliver Carranza
-Date: 3/4/2024
-Purpose: This file will have a backenemyList image where you have a (defenders) sprite that will
+ - Names: Major Andrews, Oliver Carranza, Josiah Mathews
+ - Using GitHub Repository to work collaboratively and share code, images, media, and files with each other.
+ - GameView Java file runs the gameplay and levels of project everytime character is selected.
+ - This code and documentation meet the requirements for this Mobile Final Project.
+ */
+
+
+package com.example.rainbow_six_battles;
+/*Purpose: This file will have a backenemyList image where you have a (defenders) sprite that will
         only move up or down. Enemy Sprites will also be moving from right to left.
         If the enemy sprites reach the end, then game ends.
         The defenders only have 2 minutes to survive till they win.
@@ -73,7 +78,7 @@ public class GameView extends SurfaceView {
         });
         //drawing of sledge in hammer position
         enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
-        level1 = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        level1 = BitmapFactory.decodeResource(getResources(), R.drawable.level1);
     }
 
     public void update() { // updates the screen after event
@@ -87,7 +92,7 @@ public class GameView extends SurfaceView {
             xx += enemybpm.getWidth();
         }
     }
-
+    // Code delets enemy after off screen
     public void deleteEnemy() {
         int i = -1;
         Random rand = new Random();
@@ -128,7 +133,7 @@ public class GameView extends SurfaceView {
     // Checks if time is greater than or equal to certain milliseconds and if so,
     // then closes game.
     private void checkTime() {
-        if (times.getElapsed() >= 10000) { // change time to desired length, 1,000 milli is 1 second
+        if (times.getElapsed() >= 30000) { // change time to desired length, 1,000 milli is 1 second
             Log.d("cl", "Close Game, time  is up : " + times.getElapsed());
             System.exit(0);
         }
