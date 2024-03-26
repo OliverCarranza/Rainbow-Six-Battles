@@ -20,19 +20,15 @@ import java.util.Random;
 
 public class MainActivity extends Engine {
     // member (class) variables
-
     int screenWidth;
     int screenHeight;
-
     Random random;
-
     Sprite title;
     Texture titleImage;
     Sprite characters;
     Texture charactersImg;
     Sprite level;
     Texture levelImg;
-
     Canvas canvas;
     Paint paint;
     Rect rect;
@@ -40,9 +36,13 @@ public class MainActivity extends Engine {
     boolean titleMode = true; //default screen
     private boolean characterMode;
     private boolean levelMode;
+
     Point touch;
 
-    //Texture images;
+    //Touch point rects
+    Rect ashSelect;
+    Rect buckSelect;
+    Rect oryxSelect;
 
     //Sound stuff
     SoundPool soundPool = null;
@@ -62,21 +62,20 @@ public class MainActivity extends Engine {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new GameView(this));
+        //setContentView(new GameView(this));
+
         //SETS UP FRAMING for images
         rect = new Rect();
         rect.left = 0;
         rect.top = 0;
         rect.right = getScreenWidth();
         rect.bottom = getScreenHeight();
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         soundPoolMap = new HashMap < Integer, Integer > ();
         //soundPoolMap.put(0, soundPool.load(this, R.raw.thememusic, 1));
-
     }
 
     @Override
@@ -133,9 +132,10 @@ public class MainActivity extends Engine {
             title.draw(rect);
         } else if (characterMode) {
             characters.draw(rect); //insert new var that will do character select mode
-            canvas.drawRect(400, 260, 800, 900, paint); //ash touch-zone rect
-            canvas.drawRect(950, 260, 1350, 900, paint); //buck touch-zone rect
-            canvas.drawRect(1450, 260, 1900, 900, paint); //Oryx touch-zone rect
+
+            ashSelect = new Rect(400, 260, 800, 900); //ash touch-zone rect
+            buckSelect = new Rect(950, 260, 1350, 900); //buck touch-zone rect
+            oryxSelect = new Rect(1450, 260, 1900, 900); //Oryx touch-zone rect
         } else if (levelMode) {
             level.draw(rect);
         }
@@ -143,27 +143,46 @@ public class MainActivity extends Engine {
 
     @Override
     public void update() {
+        //Log.d("clickTag", "CLICKED STATUS 1: " + clicked);
         if (getTouchInputs() > 0) {
             touch = getTouchPoint(0);
             if (titleMode) {
                 titleMode = false;
                 characterMode = true;
 
+            } else if (characterMode) {
                 int x = touch.x;
                 int y = touch.y;
-                if (x > 400 && x < 800 && y > 900 && y < 260) {
-                    /* Trigger your action here */
-                    canvas.drawRect(400, 260, 800, 900, paint); //ash touch-zone rect
 
-                    levelMode = true;
+                if (ashSelect.contains(x, y)) { // if else if
+
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            setContentView(new GameView(MainActivity.this));
+                        }
+                    });
+                    Log.d("Character mode", "Not CALLING GAME VIEW ash char");
+                } else if (buckSelect.contains(x, y)) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            setContentView(new GameView(MainActivity.this));
+                        }
+                    });
+                    Log.d("Character mode", "Selected buck character");
+                } else if (oryxSelect.contains(x, y)) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            setContentView(new GameView(MainActivity.this));
+                        }
+                    });
+                    Log.d("Character mode", "Selected oryx CHARACTER");
                 }
                 //add in click code then new GameView
-            } else {
-                //titleMode = false;
             }
-        }
-    }
 
+        }
+        //Log.d("clickTag", "CLICKED STATUS 2: " + clicked);
+    }
     private void playSound(int soundId) {
         soundPool.play(soundId, 1, 1, 1, 0, 1);
     }
