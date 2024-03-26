@@ -43,7 +43,10 @@ public class MainActivity extends Engine {
 
     Point touch;
 
-    //Texture images;
+    //Touch point rects
+    Rect ashSelect;
+    Rect buckSelect;
+    Rect oryxSelect;
 
     //Sound stuff
     SoundPool soundPool = null;
@@ -63,7 +66,8 @@ public class MainActivity extends Engine {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new GameView(this));
+        //setContentView(new GameView(this));
+
         //SETS UP FRAMING for images
         rect = new Rect();
         rect.left = 0;
@@ -77,8 +81,6 @@ public class MainActivity extends Engine {
         soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         soundPoolMap = new HashMap<Integer, Integer>();
         //soundPoolMap.put(0, soundPool.load(this, R.raw.thememusic, 1));
-
-
 
     }
 
@@ -138,9 +140,10 @@ public class MainActivity extends Engine {
             title.draw(rect);
         } else if (characterMode) {
             characters.draw(rect);  //insert new var that will do character select mode
-            canvas.drawRect(400,260,800, 900, paint);  //ash touch-zone rect
-            canvas.drawRect(950,260,1350, 900, paint);  //buck touch-zone rect
-            canvas.drawRect(1450,260,1900, 900, paint);  //Oryx touch-zone rect
+
+            ashSelect = new Rect(400,260,800, 900);  //ash touch-zone rect
+            buckSelect = new Rect(950,260,1350, 900);  //buck touch-zone rect
+            oryxSelect = new Rect(1450,260,1900, 900);  //Oryx touch-zone rect
         } else if (levelMode){
             level.draw(rect);
         }
@@ -154,19 +157,28 @@ public class MainActivity extends Engine {
                 titleMode = false;
                 characterMode = true;
 
-                    int x = touch.x;
-                    int y = touch.y;
-                    if (x > 400 && x < 800 && y > 900 && y < 260) {
-                        /* Trigger your action here */
-                        canvas.drawRect(400,260,800, 900, paint);  //ash touch-zone rect
+            } else if(characterMode) {
+                int x = touch.x;
+                int y = touch.y;
 
-                        levelMode = true;
-                    }
+                if (ashSelect.contains(x, y)) {  // if else if
+
+                    /* Trigger your action here */
+
+                    //setContentView(new GameView(this));
+                    Log.d("Character mode", "Selected ash char");
+                } else if (buckSelect.contains(x,y)){
+                    //setContentView(new GameView(this));
+                    Log.d("Character mode", "Selected buck char");
+                } else if (oryxSelect.contains(x,y)){
+                    //setContentView(new GameView(this));
+                    Log.d("Character mode", "Selected ORYX CHAR");
+                }
                 //add in click code then new GameView
-            } else {
-                //titleMode = false;
-
             }
+
+
+
         }
 
     }
