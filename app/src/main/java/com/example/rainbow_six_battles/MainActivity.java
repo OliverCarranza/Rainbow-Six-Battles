@@ -1,5 +1,5 @@
 /*
- - Names: Major Andrews, Oliver Carranza, Major Andrews
+ - Names: Major Andrews, Oliver Carranza, Josiah Mathews
  - Using GitHub Repository to work collaboratively and share code, images, media, and files with each other.
  - Main Activity Java file that starts the game and guides the user into the start of gameplay levels.
  - This code and documentation meet the requirements for this Mobile Final Project.
@@ -161,9 +161,9 @@ public class MainActivity extends Engine {
         levelImg = new Texture(this);
 
         //Directory for images inside of Assets folder
-//        if (!levelImg.loadFromAsset("drawable/level1.png")) {
-//            fatalError("Error Loading Background Image");
-//        }
+        if (!levelImg.loadFromAsset("drawable/level1.png")) {
+            fatalError("Error Loading Background Image");
+        }
 
         level.setTexture(levelImg);
         level.position = new Point(0, 0);
@@ -218,21 +218,21 @@ public class MainActivity extends Engine {
                     //the thread will only properly activate with this runnable code in each statement below
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview1
+                            setContentView(new GameView(MainActivity.this));    //call to new gameview1
                         }
                     });
                     Log.d("Character mode", "Not CALLING GAME VIEW ash char");
                 } else if (buckSelect.contains(x, y)) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview2
+                            setContentView(new GameView(MainActivity.this));    //call to new gameview2
                         }
                     });
                     Log.d("Character mode", "Selected buck character");
                 } else if (oryxSelect.contains(x, y)) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview3
+                            setContentView(new GameView(MainActivity.this));    //call to new gameview3
                         }
                     });
                     Log.d("Character mode", "Selected oryx CHARACTER");

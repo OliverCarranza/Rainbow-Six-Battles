@@ -1,3 +1,10 @@
+/*
+ - Names: Major Andrews, Oliver Carranza, Major Andrews
+ - Using GitHub Repository to work collaboratively and share code, images, media, and files with each other.
+ - Main Activity Java file that starts the game and guides the user into the start of gameplay levels.
+ - This code and documentation meet the requirements for this Mobile Final Project.
+ */
+
 package com.example.rainbow_six_battles;
 
 import android.graphics.Canvas;
