@@ -44,6 +44,9 @@ public class Enemy {
         return x;
     }
 
+    // To try to remove sledge(s) - Josiah is testing
+    public int getY() {return y;}
+
     public void onDraw(Canvas c) {
         update();
         ls = randomNumber.nextInt(601);

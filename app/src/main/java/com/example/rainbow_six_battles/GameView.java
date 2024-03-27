@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -104,7 +105,7 @@ public class GameView extends SurfaceView {
     public void deleteEnemy() {
         int i = -1;
         Random rand = new Random();
-        int r = rand.nextInt(2000 - 1000);
+        int r = rand.nextInt(2000 - 1350);
         try {
             for (i = enemyList.size(); i >= 0; i--) {
                 int coinX = enemyList.get(i - 1).getX();
@@ -119,8 +120,6 @@ public class GameView extends SurfaceView {
                     ".  enemy Size = " + enemyList.size());
         }
     }
-
-
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -151,7 +150,7 @@ public class GameView extends SurfaceView {
     // Checks if time is greater than or equal to certain milliseconds and if so,
     // then closes game.
     private boolean checkTime() {
-        if (times.getElapsed() >= 10000) { // change time to desired length, 1,000 milli is 1 second
+        if (times.getElapsed() >= 40000) { // change time to desired length, 1,000 milli is 1 second
             Log.d("cl", "Close Game, time  is up : " + times.getElapsed());
             //System.exit(0);
             return true; // reached the time limit
@@ -160,7 +159,14 @@ public class GameView extends SurfaceView {
     }
 
     private void endGame(){
-        // sledge remove by setting array to 0;
+        // sledge removed from array
+        for(int i = 0; i < enemyList.size(); i++) {
+            //if(enemyList.get(i).getX() < 50){
+                enemyList.remove(i);
+                //deleteEnemy();
+                //enemyList.set(i,)
+            //}
+        }
     }
 
 }
