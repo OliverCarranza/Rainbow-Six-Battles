@@ -21,6 +21,8 @@ public class Enemy {
     public static int width;
     private GameView gameView;
     private GameView2 gameView2;
+
+    private GameView3 gameView3;
     private Bitmap bmp;
     private int x;
     private int y;
@@ -44,6 +46,15 @@ public class Enemy {
         this.randomNumber = new Random();
     }
 
+    public Enemy(GameView3 gv, Bitmap bp, int x, int y) {
+        this.health = 3;
+        this.gameView3 = gv;
+        this.bmp = bp;
+        this.x = x;
+        this.y = y;
+        this.randomNumber = new Random();
+    }
+
     public Bitmap getBitmap(){
         return this.bmp;
     }
@@ -54,6 +65,8 @@ public class Enemy {
             x -= gameView.globalxSpeed;
         } else if(gameView2 != null) {
             x -= gameView2.globalxSpeed;
+        } else if (gameView2 != null){
+            x -= gameView3.globalxSpeed;
         }
     }
 
@@ -71,6 +84,8 @@ public class Enemy {
             c.drawBitmap(bmp, x, y + gameView.getHeight() - 800, null);
         } else if(gameView2 != null) {
             c.drawBitmap(bmp, x, y + gameView2.getHeight() - 800, null);
+        } else if (gameView3 != null){
+            c.drawBitmap(bmp, x, y + gameView3.getHeight() - 800, null);
         }
     }
 

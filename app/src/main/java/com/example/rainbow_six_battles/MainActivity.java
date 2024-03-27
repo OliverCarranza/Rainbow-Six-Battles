@@ -225,7 +225,7 @@ public class MainActivity extends Engine {
                 } else if (oryxSelect.contains(x, y)) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview3
+                            setContentView(new GameView3(MainActivity.this, screenWidth, screenHeight));    //call to new gameview3
                         }
                     });
                     Log.d("Character mode", "Selected oryx CHARACTER");
