@@ -51,6 +51,7 @@ public class GameView extends SurfaceView {
     Bitmap enemybpm; //how fast the enemy moves
     Bitmap level1;
     Bitmap endImage;
+    Rect rect;
 
     int screenWidth;
     int screenHeight;
@@ -82,12 +83,12 @@ public class GameView extends SurfaceView {
         enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
         level1 = BitmapFactory.decodeResource(getResources(), R.drawable.level1);
         endImage = BitmapFactory.decodeResource(getResources(), R.drawable.winning_screen);
-        try {
-            level1.setWidth(screenWidth);
-            level1.setHeight(screenHeight);
-        } catch(Exception a){
-            Log.d("imgB", "Error Setting Width and Height for background Image");
-        }
+       // try {
+           // level1.setWidth(screenWidth);
+       //     level1.setHeight(screenHeight);
+      //  } catch(Exception a){
+       //     Log.d("imgB", "Error Setting Width and Height for background Image");
+        //}
     }
 
     public void update() { // updates the screen after event
