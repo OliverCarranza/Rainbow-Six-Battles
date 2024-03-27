@@ -20,6 +20,7 @@ public class Enemy {
     private String name;
     public static int width;
     private GameView gameView;
+    private GameView2 gameView2;
     private Bitmap bmp;
     private int x;
     private int y;
@@ -34,10 +35,19 @@ public class Enemy {
         this.y = y;
         this.randomNumber = new Random();
     }
+    public Enemy(GameView2 gv, Bitmap bp, int x, int y) {
+        this.health = 3;
+        this.gameView2 = gv;
+        this.bmp = bp;
+        this.x = x;
+        this.y = y;
+        this.randomNumber = new Random();
+    }
 
     private void update() {
         //Move the ground
         x -= gameView.globalxSpeed;
+        x -= gameView2.globalxSpeed;
     }
 
     public int getX() {

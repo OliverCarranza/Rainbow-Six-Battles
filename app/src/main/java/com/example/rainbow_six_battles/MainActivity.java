@@ -218,7 +218,7 @@ public class MainActivity extends Engine {
                 } else if (buckSelect.contains(x, y)) {
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            setContentView(new GameView(MainActivity.this, screenWidth, screenHeight));    //call to new gameview2
+                            setContentView(new GameView2(MainActivity.this, screenWidth, screenHeight));    //call to new gameview2
                         }
                     });
                     Log.d("Character mode", "Selected buck character");

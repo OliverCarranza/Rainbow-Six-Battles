@@ -12,12 +12,16 @@ import android.graphics.Canvas;
 public class GameLoopThread extends Thread{
 
     private GameView view;
+    private GameView2 view2;
     static final long FPS = 30;
     boolean running;
 
     //Constructor
     public GameLoopThread(GameView v){
         this.view = v;
+    }
+    public GameLoopThread(GameView2 v){
+        this.view2 = v;
     }
 
     public void setRunning(boolean b) {
