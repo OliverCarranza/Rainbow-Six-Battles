@@ -91,7 +91,7 @@ public class GameView extends SurfaceView {
         //}
 
         // add line here
-        system.slee
+
     }
 
     public void update() { // updates the screen after event
