@@ -65,7 +65,7 @@ public class Enemy {
             x -= gameView.globalxSpeed;
         } else if(gameView2 != null) {
             x -= gameView2.globalxSpeed;
-        } else if (gameView2 != null){
+        } else if (gameView3 != null){
             x -= gameView3.globalxSpeed;
         }
     }

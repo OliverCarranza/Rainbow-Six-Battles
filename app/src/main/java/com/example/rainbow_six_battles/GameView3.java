@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GameView3 extends SurfaceView {
-    public static int globalxSpeed = 5; //changes speed of enemy sprite
+    public static int globalxSpeed = 20; //changes speed of enemy sprite
     int xx = 0;
     private GameLoopThread gameLoopThread; //changes framerate
     private SurfaceHolder holder;
