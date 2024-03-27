@@ -89,6 +89,9 @@ public class GameView extends SurfaceView {
       //  } catch(Exception a){
        //     Log.d("imgB", "Error Setting Width and Height for background Image");
         //}
+
+        // add line here
+        system.slee
     }
 
     public void update() { // updates the screen after event
