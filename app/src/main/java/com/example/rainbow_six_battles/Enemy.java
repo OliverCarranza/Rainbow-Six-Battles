@@ -44,10 +44,17 @@ public class Enemy {
         this.randomNumber = new Random();
     }
 
+    public Bitmap getBitmap(){
+        return this.bmp;
+    }
+
     private void update() {
         //Move the ground
-        x -= gameView.globalxSpeed;
-        x -= gameView2.globalxSpeed;
+        if(gameView != null) {
+            x -= gameView.globalxSpeed;
+        } else if(gameView2 != null) {
+            x -= gameView2.globalxSpeed;
+        }
     }
 
     public int getX() {
@@ -60,7 +67,11 @@ public class Enemy {
     public void onDraw(Canvas c) {
         update();
         ls = randomNumber.nextInt(601);
-        c.drawBitmap(bmp, x, y + gameView.getHeight() - 800, null);
+        if(gameView != null) {
+            c.drawBitmap(bmp, x, y + gameView.getHeight() - 800, null);
+        } else if(gameView2 != null) {
+            c.drawBitmap(bmp, x, y + gameView2.getHeight() - 800, null);
+        }
     }
 
 }

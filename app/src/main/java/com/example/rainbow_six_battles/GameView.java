@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -34,6 +35,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameView extends SurfaceView {
+public class GameView extends SurfaceView implements Callback, View.OnTouchListener {
     public static int globalxSpeed = 5; //changes speed of enemy sprite
     int xx = 0;
     private GameLoopThread gameLoopThread; //changes framerate
@@ -49,6 +51,7 @@ public class GameView extends SurfaceView {
     private Timer times;
 
     Bitmap enemybpm; //how fast the enemy moves
+    private boolean sledgeClicked = false; // Flag to check if sledge is clicked
     Bitmap level1;
     Bitmap endImage;
     Rect rect;
@@ -104,6 +107,8 @@ public class GameView extends SurfaceView {
             enemyList.add(new Enemy(this, enemybpm, xx, 0));
             xx += enemybpm.getWidth();
         }
+
+        setOnTouchListener(this); // Set onTouchListener for handling touch events
     }
 
     public void deleteEnemy() {
@@ -114,7 +119,7 @@ public class GameView extends SurfaceView {
             for (i = enemyList.size(); i >= 0; i--) {
                 int coinX = enemyList.get(i - 1).getX();
 
-                if (coinX < -Enemy.width) {
+                if (coinX < - Enemy.width) {
                     enemyList.remove(i - 1);
                     enemyList.add(new Enemy(this, enemybpm,coinX + this.getWidth() + Enemy.width, r));
                 }
@@ -173,4 +178,44 @@ public class GameView extends SurfaceView {
         }
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        // Get touch coordinates
+        float touchX = event.getX();
+        float touchY = event.getY();
+
+        // Check if the touch event occurred on the sledge image
+        if (event.getAction() == MotionEvent.ACTION_DOWN && !sledgeClicked) {
+            if (touchX >= xx && touchX <= xx + enemybpm.getWidth() &&
+                    touchY >= 0 && touchY <= enemybpm.getHeight()) {
+                // If the sledge is clicked, remove it from the list
+                sledgeClicked = true;
+                deleteSledge();
+                Log.d("touchSle", "Touched Sledge!!");
+            }
+        }
+        Log.d("noTouSle", "Did NOT Touch Sledge  X: " + touchX + " | Y: " + touchY);
+        return true;
+    }
+
+    private void deleteSledge() {
+        // Iterate over the enemyList to find and remove the sledge
+        for (int i = 0; i < enemyList.size(); i++) {
+            Enemy enemy = enemyList.get(i);
+            if (enemy.getBitmap() == enemybpm) {
+                enemyList.remove(i);
+                break; // Exit loop once sledge is removed
+            }
+        }
+        Log.d("delSle", "Deleted Sledge!!");
+    }
+
+    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        gameLoopThread.setRunning(true);
+        gameLoopThread.start();
+    }
+    @Override
+    public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {}
+    @Override
+    public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {}
 }

@@ -33,30 +33,58 @@ public class GameLoopThread extends Thread{
         long startTime = 0;
         long sleepTime;
 
-        while (running) {
-            Canvas c = null;
+        if(view != null) {
+            while (running) {
+                Canvas c = null;
 
-            try {
-                c = view.getHolder().lockCanvas();
-                synchronized (view.getHolder()) {
-                    view.draw(c); //onDraw if errors
-
-                }
-            } finally {
-                if (c != null){
-                    view.getHolder().unlockCanvasAndPost(c);
-                }
-                sleepTime = ticksPS - (System.currentTimeMillis() - startTime);
                 try {
-                    if (sleepTime > 0){
-                        sleep(sleepTime);
-                    } else {
-                        sleep(10);
+                    c = view.getHolder().lockCanvas();
+                    synchronized (view.getHolder()) {
+                        view.draw(c); //onDraw if errors
+
                     }
-                } catch (Exception e){
-                    //TODO debug
+                } finally {
+                    if (c != null) {
+                        view.getHolder().unlockCanvasAndPost(c);
+                    }
+                    sleepTime = ticksPS - (System.currentTimeMillis() - startTime);
+                    try {
+                        if (sleepTime > 0) {
+                            sleep(sleepTime);
+                        } else {
+                            sleep(10);
+                        }
+                    } catch (Exception e) {
+                        //TODO debug
+                    }
                 }
-            }
-        }
+            } // end of loop
+        } else if(view2 != null) { // end of first view if
+            while (running) {
+                Canvas c = null;
+
+                try {
+                    c = view2.getHolder().lockCanvas();
+                    synchronized (view2.getHolder()) {
+                        view2.draw(c); //onDraw if errors
+
+                    }
+                } finally {
+                    if (c != null) {
+                        view2.getHolder().unlockCanvasAndPost(c);
+                    }
+                    sleepTime = ticksPS - (System.currentTimeMillis() - startTime);
+                    try {
+                        if (sleepTime > 0) {
+                            sleep(sleepTime);
+                        } else {
+                            sleep(10);
+                        }
+                    } catch (Exception e) {
+                        //TODO debug
+                    }
+                }
+            } // end of loop
+        } // end of if
     }
 }
