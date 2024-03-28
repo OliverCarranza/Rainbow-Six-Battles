@@ -17,7 +17,7 @@ public class GameLoopThread extends Thread {
     static final long FPS = 30;
     boolean running;
 
-    //Constructor
+    //Constructors for three gameviews
     public GameLoopThread(GameView v) {
         this.view = v;
     }

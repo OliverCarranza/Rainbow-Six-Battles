@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 
 import java.util.Random;
 
+// class
 public class Enemy {
     public static int width;
     private GameView gameView;
@@ -24,6 +25,8 @@ public class Enemy {
     Random randomNumber;
     private int ls;
 
+
+    //constructors for the enemy Class
     public Enemy(GameView gv, Bitmap bp, int x, int y) {
         this.gameView = gv;
         this.bmp = bp;
@@ -51,6 +54,7 @@ public class Enemy {
         return this.bmp;
     }
 
+    // Sets X var to globalSpeed for the enemies
     private void update() {
         //Move the ground
         if(gameView != null) {
@@ -71,6 +75,9 @@ public class Enemy {
     public void setY(int y){this.y = y;}
     public void setX(int x){this.x = x;}
 
+
+    // calls update method from Enemy Class which sets speed.
+    // Then draws the images at the certain x, y, image, height and paint method
     public void onDraw(Canvas c) {
         update();
         ls = randomNumber.nextInt(601);

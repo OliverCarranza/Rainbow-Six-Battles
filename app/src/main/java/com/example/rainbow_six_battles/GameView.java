@@ -1,12 +1,12 @@
 package com.example.rainbow_six_battles;
 /*
-Author: Oliver Carranza
-Date: 3/4/2024
-Purpose: This file will have a backenemyList image where you have a (defenders) sprite that will
-        only move up or down. Enemy Sprites will also be moving from right to left.
-        If the enemy sprites reach the end, then game ends.
-        The defenders only have 2 minutes to survive till they win.
+ - Names: Major Andrews, Oliver Carranza, Josiah Mathews
+ - Using GitHub Repository to work collaboratively and share code, images, media, and files with each other.
+ - GameView Java file that starts the game and guides the user into the start of gameplay levels.
+ - This code and documentation meet the requirements for this Mobile Final Project.
  */
+
+// **********************  THIS ONE HAS GOOD COMMENTS  ********************************
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,7 +37,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     private Canvas canv;
     private Bitmap enemybpm; //how fast the enemy moves
     private Bitmap defeatImg;
-    private Bitmap level1;
+    private Bitmap level1; // level Bitmap
     private Bitmap endImage;
     private Paint paint;
     private int screenWidth;
@@ -46,6 +46,10 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     private int score = 0;
     private List < Enemy > enemyList = new ArrayList < Enemy > (); // any enemies in the screen that has to be spawned or is spawned
 
+
+    //constructor that passes in Context class and two int's called
+    //  screenWidth and screenHeight.
+    //  This is where most of the initializing is going to happen. For the game classes.
     public GameView(Context context, int screenWidth, int screenHeight) {
         super(context); // calling parent
         //drawBackground();
@@ -66,11 +70,12 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
             @Override
             public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {}
         });
+
         //drawing of sledge in hammer position
         enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
         level1 = BitmapFactory.decodeResource(getResources(), R.drawable.level1); //change image for levels
-        endImage = BitmapFactory.decodeResource(getResources(), R.drawable.winning_screen);
-        defeatImg = BitmapFactory.decodeResource(getResources(), R.drawable.defeat);
+        endImage = BitmapFactory.decodeResource(getResources(), R.drawable.winning_screen); // victory screen
+        defeatImg = BitmapFactory.decodeResource(getResources(), R.drawable.defeat); // loser screen
         //timers for spawning and figuring spawnage
         times = new Timer();
         spawnTime = new Timer();
@@ -84,10 +89,12 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         setOnTouchListener(this);
     }
 
+    // when called, this function calls another function called deleteEnemy()
     public void update() { // updates the screen after event
         deleteEnemy();
     }
 
+    //  Adds enemy to the enemyList and randomizes its position in the screen.
     public void addGround() { // adds enemy to map
         Log.d("addEnmeny", "ADDED ENEMY TO THE MAP!!!!");
         Random rand = new Random();
@@ -96,7 +103,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         int r = screenWidth - rand.nextInt(200);
         enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r2));
     }
-
+    // removes enemy from the enemyList and adds more after removing one.
     public void deleteEnemy() {
         int i = -1;
         Random rand = new Random();
@@ -124,6 +131,9 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         }
     }
     //drawing objects and updating screen with new items
+    // checks for time limit reached
+    // enemy reached ending
+    // also draws and logs other small details.
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
@@ -154,7 +164,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         // drawing score
         canvas.drawText("Score: " + score, 200, 55, paint);
     }
-
+    //  If timer is greater than 1.5 seconds, reset timer by setting it to a new timer
     private boolean checkEnemyTime() {
         if (spawnTime.getElapsed() >= 1500) {
             spawnTime = new Timer();
@@ -174,6 +184,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         return false; //means that it still has not reached the time limit
     }
 
+    // calls the function deletesSeldge
     private void endGame() {
         // sledge removed from array
 //        for (int i = 0; i < enemyList.size(); i++) {
@@ -182,6 +193,8 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
 //        }
     }
 
+    // Checks for user input and if so then raise score and check which enemy is
+    //  close to the wall to remove them.
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -209,6 +222,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         return true;
     }
 
+    // goes through the enemyList and removes every single enemy
     private void deleteSledge() {
         // Iterate over the enemyList to find and remove the sledge
         for (int i = 0; i < enemyList.size(); i++) {
@@ -221,6 +235,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         Log.d("delSle", "Deleted Sledge!!");
     }
 
+    // functions for the setTouchInputs required down here.
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         gameLoopThread.setRunning(true);
         gameLoopThread.start();
