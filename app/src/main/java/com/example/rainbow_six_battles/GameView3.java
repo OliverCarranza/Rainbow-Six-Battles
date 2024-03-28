@@ -13,57 +13,44 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
-
 import androidx.annotation.NonNull;
-
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.SurfaceHolder.Callback;
-
-import androidx.annotation.NonNull;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.view.View;
 import java.util.Random;
 
-public class GameView3 extends SurfaceView {
+public class GameView3 extends SurfaceView implements Callback, View.OnTouchListener {
     public static int globalxSpeed = 20; //changes speed of enemy sprite
-    int xx = 0;
+    private int xx = 0;
     private GameLoopThread gameLoopThread; //changes framerate
     private SurfaceHolder holder;
     private Timer times;
-
-    Bitmap enemybpm; //how fast the enemy moves
-    Bitmap level3;
-    Bitmap endImage;
-    Rect rect;
-
-    int screenWidth;
-    int screenHeight;
+    private Timer spawnTime;
+    private Timestamp lastClick;
+    private Canvas canv;
+    private Bitmap enemybpm; //how fast the enemy moves
+    private Bitmap defeatImg;
+    private Bitmap level3;
+    private Bitmap endImage;
+    private Paint paint;
+    private int screenWidth;
+    private int screenHeight;
+    private boolean endGameBool = false;
+    private int score = 0;
     private List < Enemy > enemyList = new ArrayList < Enemy > (); // any enemies in the screen that has to be spawned or is spawned
 
     public GameView3(Context context, int screenWidth, int screenHeight) {
         super(context); // calling parent
         //drawBackground();
-        gameLoopThread = new GameLoopThread(this); //new gameloop passing in Gameview
-
-        times = new Timer();
-        Log.d("new_time", "TIME BEGGING is " + times.getElapsed());
+        canv = new Canvas();
+        gameLoopThread = new GameLoopThread(this); //new gameloop passing in Gameviev
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
         holder = getHolder();
@@ -81,17 +68,20 @@ public class GameView3 extends SurfaceView {
         });
         //drawing of sledge in hammer position
         enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
-        level3 = BitmapFactory.decodeResource(getResources(), R.drawable.level3);
+        level3 = BitmapFactory.decodeResource(getResources(), R.drawable.level3); //change image for levels
         endImage = BitmapFactory.decodeResource(getResources(), R.drawable.winning_screen);
-        // try {
-        // level1.setWidth(screenWidth);
-        //     level1.setHeight(screenHeight);
-        //  } catch(Exception a){
-        //     Log.d("imgB", "Error Setting Width and Height for background Image");
-        //}
-
-        // add line here
-
+        defeatImg = BitmapFactory.decodeResource(getResources(), R.drawable.defeat);
+        //timers for spawning and figuring spawnage
+        times = new Timer();
+        spawnTime = new Timer();
+        lastClick = new Timestamp(new Date().getTime());
+        //paint
+        paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(80);
+        //touch listener
+        setOnTouchListener(this);
     }
 
     public void update() { // updates the screen after event
@@ -99,58 +89,79 @@ public class GameView3 extends SurfaceView {
     }
 
     public void addGround() { // adds enemy to map
-        // will continuously add an enemy to the map
-        while (xx < this.getWidth() + Enemy.width) {
-            enemyList.add(new Enemy(this, enemybpm, xx, 0));
-            xx += enemybpm.getWidth();
-        }
+        Log.d("addEnmeny", "ADDED ENEMY TO THE MAP!!!!");
+        Random rand = new Random();
+        Random rand2 = new Random();
+        int r2 = rand2.nextInt(300);
+        int r = screenWidth - rand.nextInt(200);
+        enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r2));
     }
 
     public void deleteEnemy() {
         int i = -1;
         Random rand = new Random();
-        int r = rand.nextInt(2000 - 1350);
-        try {
-            for (i = enemyList.size(); i >= 0; i--) {
-                int coinX = enemyList.get(i - 1).getX();
+        int r = screenWidth - rand.nextInt(200);
+        if (enemyList.size() == 0 && !endGameBool) { //supposed to be like this, a surprise enemy
+            enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r));
+            enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r));
+            enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r));
+        } else {
+            try {
+                for (i = enemyList.size(); i > 0; i--) {
+                    int coinX = enemyList.get(i - 1).getX();
+                    if (coinX < -Enemy.width) {
+                        endGameBool = true;
+                        enemyList.remove(i - 1);
+                        enemyList.add(new Enemy(this, enemybpm, coinX + this.getWidth() + Enemy.width, r));
+                        //add the code for switching screen HERE
 
-                if (coinX < -Enemy.width) {
-                    enemyList.remove(i - 1);
-                    enemyList.add(new Enemy(this, enemybpm,coinX + this.getWidth() + Enemy.width, r));
+                    }
                 }
+            } catch (Exception e) {
+                Log.d("DELETE_ENEMY", "Error found-" + i + ".  " + e.toString() +
+                        ".  enemy Size = " + enemyList.size());
             }
-        } catch (Exception e) {
-            Log.d("d", "Error found-" + i + ".  " + e.toString() +
-                    ".  enemy Size = " + enemyList.size());
         }
     }
-
+    //drawing objects and updating screen with new items
     public void draw(Canvas canvas) {
         super.draw(canvas);
         update(); // updates
-        if(times.getElapsed() > 100) {
+        if (times.getElapsed() > 100) {
             canvas.drawBitmap(level3, 0, 0, new Paint());
         }
-        addGround(); // adds enemy to ground
+        if (endGameBool) {
+            canvas.drawBitmap(defeatImg, 0, 0, new Paint());
+            deleteSledge();
+
+            Log.d("endGame", "END GAME GAME ENDED YOU LOST");
+        }
+        if (checkEnemyTime()) {
+            addGround(); // adds enemy to ground
+        }
+
         Log.d("t", "Current Time elapsed " + times.getElapsed());
-        if(checkTime()){ //Checks time if it is more than alloted, will display the end winning screen.
-            try {
-                endImage.setWidth(screenWidth);
-                endImage.setHeight(screenHeight);
-            } catch(Exception a){
-                Log.d("imgB", "Error Setting Width and Height for End Game Image");
-            }
+        if (checkTime() && !endGameBool) { //Checks time if it is more than alloted, will display the end winning screen.
             endGame();
             canvas.drawBitmap(endImage, 0, 0, new Paint());
         }
-        Paint textPaint = new Paint();
-        textPaint.setTextSize(32);
 
         for (Enemy genemyList: enemyList) { // draws enemy to canvas
             genemyList.onDraw(canvas);
         }
-
+        // drawing score
+        canvas.drawText("Score: " + score, 200, 55, paint);
     }
+
+    private boolean checkEnemyTime() {
+        if (spawnTime.getElapsed() >= 1500) {
+            spawnTime = new Timer();
+            return true;
+        }
+
+        return false;
+    }
+
     // Checks if time is greater than or equal to certain milliseconds and if so,
     // then closes game.
     private boolean checkTime() {
@@ -159,18 +170,63 @@ public class GameView3 extends SurfaceView {
             //System.exit(0);
             return true; // reached the time limit
         }
-        return false;//means that it still has not reached the time limit
+        return false; //means that it still has not reached the time limit
     }
 
-    private void endGame(){
+    private void endGame() {
         // sledge removed from array
-        for(int i = 0; i < enemyList.size(); i++) {
-            //if(enemyList.get(i).getX() < 50){
+        for (int i = 0; i < enemyList.size(); i++) {
             enemyList.remove(i);
-            //deleteEnemy();
-            //enemyList.set(i,)
-            //}
+            endGameBool = true;
+            deleteEnemy();
         }
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            //checking if time stamp from begging is less than 250 mm than new click
+            // if smaller, does not allow code to run
+
+            //            Timestamp temp = new Timestamp(new Date().getTime());
+            //            long lmg = lastClick.getTime() - temp.getTime();
+            //            if(lmg <= 250){
+            //                return false;
+            //            }
+            //            lastClick = temp;
+
+            int a = 0;
+            for (int i = 0; i < enemyList.size(); i++) {
+                if (enemyList.get(a).getX() > enemyList.get(i).getX()) {
+                    a = i;
+                    score++;
+                }
+            }
+            enemyList.get(a).setX(screenWidth);
+            spawnTime = new Timer();
+        } // end if
+
+        return true;
+    }
+
+    private void deleteSledge() {
+        // Iterate over the enemyList to find and remove the sledge
+        for (int i = 0; i < enemyList.size(); i++) {
+            Enemy enemy = enemyList.get(i);
+            if (enemy.getBitmap() == enemybpm) {
+                enemyList.remove(i);
+                //break; // Exit loop once sledge is removed
+            }
+        }
+        Log.d("delSle", "Deleted Sledge!!");
+    }
+
+    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        gameLoopThread.setRunning(true);
+        gameLoopThread.start();
+    }
+    @Override
+    public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {}
+    @Override
+    public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {}
 }

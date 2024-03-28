@@ -99,6 +99,8 @@ public class MainActivity extends Engine {
         super.onCreate(savedInstanceState);
         //setContentView(new GameView(this));
 
+        setScreenOrientation(ScreenModes.LANDSCAPE);    //sets orientation
+
         //SETS UP FRAMING for images
         rect = new Rect();
         rect.left = 0;
