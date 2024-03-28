@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
@@ -49,10 +50,11 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     private GameLoopThread gameLoopThread; //changes framerate
     private SurfaceHolder holder;
     private Timer times;
-
-    Bitmap enemybpm; //how fast the enemy moves
+    private Canvas canv;
+    private Bitmap enemybpm; //how fast the enemy moves
     private boolean sledgeClicked = false; // Flag to check if sledge is clicked
     Bitmap level1;
+    double lastClick;
     Bitmap endImage;
     Rect rect;
     Enemy en; // enemy class
@@ -65,6 +67,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     public GameView(Context context, int screenWidth, int screenHeight) {
         super(context); // calling parent
         //drawBackground();
+        canv = new Canvas();
         gameLoopThread = new GameLoopThread(this); //new gameloop passing in Gameview
 
         times = new Timer();
@@ -88,14 +91,6 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         enemybpm = BitmapFactory.decodeResource(getResources(), R.drawable.sledge1);
         level1 = BitmapFactory.decodeResource(getResources(), R.drawable.level1);
         endImage = BitmapFactory.decodeResource(getResources(), R.drawable.winning_screen);
-       // try {
-           // level1.setWidth(screenWidth);
-       //     level1.setHeight(screenHeight);
-      //  } catch(Exception a){
-       //     Log.d("imgB", "Error Setting Width and Height for background Image");
-        //}
-
-        // add line here
 
     }
 
@@ -111,7 +106,9 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
             enemyList.add(new Enemy(this, enemybpm, xx, r));
             en = enemyList.get(enemyList.size()-1);
             rectList.add(new Rect(en.getX() + 15, en.getY() + 5, Enemy.width, 200));
+            canv.drawRect(rectList.get(rectList.size() -1), new Paint(Color.WHITE));
             xx += enemybpm.getWidth();
+            Log.d("addRect", "Added Rectangle!!! ******");
         };
         setOnTouchListener(this); // Set onTouchListener for handling touch events
     }
@@ -128,8 +125,12 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
                     enemyList.remove(i - 1);
                     rectList.remove(i - 1); // removes the second to last rectangle object
                     enemyList.add(new Enemy(this, enemybpm,coinX + this.getWidth() + Enemy.width, r));
-                    en = enemyList.get(enemyList.size()-1);
-                    rectList.add(new Rect(en.getX() + 15, en.getY() + 5, Enemy.width, 200));
+ //                   en = enemyList.get(enemyList.size()-1);
+                    // too hard
+//                    rectList.add(new Rect(en.getX() + 15, en.getY() + 5, Enemy.width, 200));
+//
+//                    Log.d("enPos", "Current Enemy Position X: " + enemyList.get(enemyList.size()-1).getX() + " | Y: " + enemyList.get(enemyList.size()-1).getY());
+//                    Log.d("rectPos", "Current Rectangle Position X: " + rectList.get(rectList.size() - 1).centerX() + " | Y: " + rectList.get(rectList.size() - 1).centerY());
                 }
             }
         } catch (Exception e) {
@@ -148,17 +149,11 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         update(); // updates
         Log.d("t", "Current Time elapsed " + times.getElapsed());
         if(checkTime()){ //Checks time if it is more than alloted, will display the end winning screen.
-            try {
-                endImage.setWidth(screenWidth);
-                endImage.setHeight(screenHeight);
-            } catch(Exception a){
-                Log.d("imgB", "Error Setting Width and Height for End Game Image");
-            }
             endGame();
             canvas.drawBitmap(endImage, 0, 0, new Paint());
         }
-        Paint textPaint = new Paint();
-        textPaint.setTextSize(32);
+//        Paint textPaint = new Paint();
+//        textPaint.setTextSize(32);
 
         for (Enemy genemyList: enemyList) { // draws enemy to canvas
             genemyList.onDraw(canvas);
@@ -190,17 +185,41 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // Get touch coordinates
-        int touchX = (int) event.getX();
-        int touchY = (int) event.getY();
+//        int touchX = (int) event.getX();
+//        int touchY = (int) event.getY();
 
         // Check if the touch event occurred on the sledge image
-        if (event.getAction() == MotionEvent.ACTION_DOWN && !sledgeClicked) {
-            if (1 == 1) {
-                deleteSledge();
-                Log.d("touchSle", "Touched rect!!");
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            for(int i = 0; i < rectList.size(); i++) {
+//                if (rectList.get(i).contains(touchX, touchY)) {
+//                    deleteSledge();
+//                    Log.d("touchSle", "Touched rect!!");
+//                }
+            deleteSledge();
+            lastClick = System.currentTimeMillis();
+
+            }
+
+            Log.d("touched", "TOUCHED SCREEN BUT INSIDE FIRST IF STATEMENT");
+//        }
+//        Log.d("noTouSle", "Did NOT Touch rect  X: " + touchX + " | Y: " + touchY);
+        //Log.d("noTouSleEne", "Did NOT Touch rect  X: " + touchX + " | Y: " + touchY);
+        return true;
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        if(System.currentTimeMillis() - lastClick > 500){
+            lastClick = System.currentTimeMillis();
+            synchronized (getHolder()){
+                for(int i = enemyList.size() - 1; i >= 0; i--){
+                    Enemy enmy = enemyList.get(i);
+                    //if(enmy.isCollition(event.getX(), event.getY())){
+                       enemyList.remove(enmy);
+                       break;
+                    //}
+                }
             }
         }
-        Log.d("noTouSle", "Did NOT Touch rect  X: " + touchX + " | Y: " + touchY);
         return true;
     }
 
