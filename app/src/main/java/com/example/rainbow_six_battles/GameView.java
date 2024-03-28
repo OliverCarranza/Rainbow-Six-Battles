@@ -12,43 +12,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorSpace;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
-
 import androidx.annotation.NonNull;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.SurfaceHolder.Callback;
 import android.view.View;
-
-import androidx.annotation.NonNull;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class GameView extends SurfaceView implements Callback, View.OnTouchListener {
-    public static int globalxSpeed = 7; //changes speed of enemy sprite
+    public static int globalxSpeed = 9; //changes speed of enemy sprite
     private int xx = 0;
     private GameLoopThread gameLoopThread; //changes framerate
     private SurfaceHolder holder;
@@ -115,17 +94,17 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         Random rand2 = new Random();
         int r2 = rand2.nextInt(300);
         int r = screenWidth - rand.nextInt(200);
-        enemyList.add(new Enemy(this, enemybpm,r + Enemy.width, r2));
+        enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r2));
     }
 
     public void deleteEnemy() {
         int i = -1;
         Random rand = new Random();
-        int r = screenWidth - rand.nextInt(200) ;
-        if(enemyList.size() == 0 && !endGameBool){ //supposed to be like this, a surprise enemy
-            enemyList.add(new Enemy(this, enemybpm,r + Enemy.width, r));
-            enemyList.add(new Enemy(this, enemybpm,r + Enemy.width, r));
-            enemyList.add(new Enemy(this, enemybpm,r + Enemy.width, r));
+        int r = screenWidth - rand.nextInt(200);
+        if (enemyList.size() == 0 && !endGameBool) { //supposed to be like this, a surprise enemy
+            enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r));
+            enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r));
+            enemyList.add(new Enemy(this, enemybpm, r + Enemy.width, r));
         } else {
             try {
                 for (i = enemyList.size(); i > 0; i--) {
@@ -148,21 +127,21 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     public void draw(Canvas canvas) {
         super.draw(canvas);
         update(); // updates
-        if(times.getElapsed() > 100) {
+        if (times.getElapsed() > 100) {
             canvas.drawBitmap(level1, 0, 0, new Paint());
         }
-        if(endGameBool){
+        if (endGameBool) {
             canvas.drawBitmap(defeatImg, 0, 0, new Paint());
             deleteSledge();
 
             Log.d("endGame", "END GAME GAME ENDED YOU LOST");
         }
-        if(checkEnemyTime()){
+        if (checkEnemyTime()) {
             addGround(); // adds enemy to ground
         }
 
         Log.d("t", "Current Time elapsed " + times.getElapsed());
-        if(checkTime() && !endGameBool){ //Checks time if it is more than alloted, will display the end winning screen.
+        if (checkTime() && !endGameBool) { //Checks time if it is more than alloted, will display the end winning screen.
             endGame();
             canvas.drawBitmap(endImage, 0, 0, new Paint());
         }
@@ -175,7 +154,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     }
 
     private boolean checkEnemyTime() {
-        if(spawnTime.getElapsed() >= 1500) {
+        if (spawnTime.getElapsed() >= 1500) {
             spawnTime = new Timer();
             return true;
         }
@@ -191,15 +170,15 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
             //System.exit(0);
             return true; // reached the time limit
         }
-        return false;//means that it still has not reached the time limit
+        return false; //means that it still has not reached the time limit
     }
 
-    private void endGame(){
+    private void endGame() {
         // sledge removed from array
-        for(int i = 0; i < enemyList.size(); i++) {
-                enemyList.remove(i);
-                endGameBool = true;
-                deleteEnemy();
+        for (int i = 0; i < enemyList.size(); i++) {
+            enemyList.remove(i);
+            endGameBool = true;
+            deleteEnemy();
         }
     }
 
@@ -209,17 +188,16 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
             //checking if time stamp from begging is less than 250 mm than new click
             // if smaller, does not allow code to run
 
-
-//            Timestamp temp = new Timestamp(new Date().getTime());
-//            long lmg = lastClick.getTime() - temp.getTime();
-//            if(lmg <= 250){
-//                return false;
-//            }
-//            lastClick = temp;
+            //            Timestamp temp = new Timestamp(new Date().getTime());
+            //            long lmg = lastClick.getTime() - temp.getTime();
+            //            if(lmg <= 250){
+            //                return false;
+            //            }
+            //            lastClick = temp;
 
             int a = 0;
-            for(int i = 0; i < enemyList.size(); i++) {
-                if(enemyList.get(a).getX() > enemyList.get(i).getX()) {
+            for (int i = 0; i < enemyList.size(); i++) {
+                if (enemyList.get(a).getX() > enemyList.get(i).getX()) {
                     a = i;
                     score++;
                 }
