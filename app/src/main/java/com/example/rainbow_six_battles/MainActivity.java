@@ -76,7 +76,6 @@ public class MainActivity extends Engine {
     Rect buckSelect;
     Rect oryxSelect;
 
-
     //Sound stuff amy not be utilzed due to bugs in the end
     SoundPool soundPool = null;
     HashMap<Integer, Integer> soundPoolMap;
@@ -102,7 +101,6 @@ public class MainActivity extends Engine {
 
         //SETS UP FRAMING for images
         rect = new Rect();
-
         rect.left = 0;
         rect.top = 0;
         //adjustable
@@ -116,7 +114,6 @@ public class MainActivity extends Engine {
         soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         soundPoolMap = new HashMap<Integer, Integer>();
         //soundPoolMap.put(0, soundPool.load(this, R.raw.thememusic, 1));
-
     }
 
     //Init function that overrides the super class to initialize variable and parameters of the program
@@ -155,7 +152,6 @@ public class MainActivity extends Engine {
         if (!charactersImg.loadFromAsset("GamePics/LoadingScreens/pickCharacter.png")) {
             fatalError("Error Loading Pick Character Image");
         }
-
         //characters sprite gains its texture image background like other sprites above
         characters.setTexture(charactersImg);
         characters.position = new Point(0, 0);
@@ -230,13 +226,8 @@ public class MainActivity extends Engine {
                     });
                     Log.d("Character mode", "Selected oryx CHARACTER");
                 }
-                //add in click code then new GameView
             }
-
-
-
         }
-        //Log.d("clickTag", "CLICKED STATUS 2: " + clicked);
     }
 
     //Sound function not utilized as of right now

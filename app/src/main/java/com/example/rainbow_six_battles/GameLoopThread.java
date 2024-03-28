@@ -26,8 +26,7 @@ public class GameLoopThread extends Thread {
         this.view2 = v;
     }
 
-    public GameLoopThread(GameView3 v){
-        this.view3 = v;}
+    public GameLoopThread(GameView3 v){this.view3 = v;}
 
     public void setRunning(boolean b) {
         running = b;

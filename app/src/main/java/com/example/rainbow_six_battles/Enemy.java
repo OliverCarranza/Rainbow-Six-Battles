@@ -13,11 +13,6 @@ import android.graphics.Canvas;
 import java.util.Random;
 
 public class Enemy {
-    private int health;
-    private int bps; //bullets per second
-    private int cost;
-    private int recharge;
-    private String name;
     public static int width;
     private GameView gameView;
     private GameView2 gameView2;
@@ -30,7 +25,6 @@ public class Enemy {
     private int ls;
 
     public Enemy(GameView gv, Bitmap bp, int x, int y) {
-        this.health = 3;
         this.gameView = gv;
         this.bmp = bp;
         this.x = x;
@@ -38,7 +32,6 @@ public class Enemy {
         this.randomNumber = new Random();
     }
     public Enemy(GameView2 gv, Bitmap bp, int x, int y) {
-        this.health = 3;
         this.gameView2 = gv;
         this.bmp = bp;
         this.x = x;
@@ -47,7 +40,6 @@ public class Enemy {
     }
 
     public Enemy(GameView3 gv, Bitmap bp, int x, int y) {
-        this.health = 3;
         this.gameView3 = gv;
         this.bmp = bp;
         this.x = x;
@@ -76,6 +68,8 @@ public class Enemy {
 
     // To try to remove sledge(s) - Josiah is testing
     public int getY() {return y;}
+    public void setY(int y){this.y = y;}
+    public void setX(int x){this.x = x;}
 
     public void onDraw(Canvas c) {
         update();

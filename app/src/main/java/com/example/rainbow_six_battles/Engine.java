@@ -138,7 +138,6 @@ public abstract class Engine extends Activity implements Runnable,
         long timeDiff=0;
 
         while (p_running) {
-
             /**
              * Process frame only if not paused.
              */
