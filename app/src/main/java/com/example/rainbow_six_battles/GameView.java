@@ -195,7 +195,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
 
         // Check if the touch event occurred on the sledge image
         if (event.getAction() == MotionEvent.ACTION_DOWN && !sledgeClicked) {
-            if () {
+            if (1 == 1) {
                 deleteSledge();
                 Log.d("touchSle", "Touched rect!!");
             }
