@@ -55,10 +55,12 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     Bitmap level1;
     Bitmap endImage;
     Rect rect;
+    Enemy en; // enemy class
 
     int screenWidth;
     int screenHeight;
     private List < Enemy > enemyList = new ArrayList < Enemy > (); // any enemies in the screen that has to be spawned or is spawned
+    private List < Rect > rectList = new ArrayList< Rect >(); // array of rectangle objects that will go over the enemy
 
     public GameView(Context context, int screenWidth, int screenHeight) {
         super(context); // calling parent
@@ -102,12 +104,15 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     }
 
     public void addGround() { // adds enemy to map
+        Random rand = new Random();
+        int r = rand.nextInt(2000 - 1350);
         // will continuously add an enemy to the map
         while (xx < this.getWidth() + Enemy.width) {
-            enemyList.add(new Enemy(this, enemybpm, xx, 0));
+            enemyList.add(new Enemy(this, enemybpm, xx, r));
+            en = enemyList.get(enemyList.size()-1);
+            rectList.add(new Rect(en.getX() + 15, en.getY() + 5, Enemy.width, 200));
             xx += enemybpm.getWidth();
-        }
-
+        };
         setOnTouchListener(this); // Set onTouchListener for handling touch events
     }
 
@@ -121,7 +126,10 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
 
                 if (coinX < - Enemy.width) {
                     enemyList.remove(i - 1);
+                    rectList.remove(i - 1); // removes the second to last rectangle object
                     enemyList.add(new Enemy(this, enemybpm,coinX + this.getWidth() + Enemy.width, r));
+                    en = enemyList.get(enemyList.size()-1);
+                    rectList.add(new Rect(en.getX() + 15, en.getY() + 5, Enemy.width, 200));
                 }
             }
         } catch (Exception e) {
@@ -132,11 +140,12 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        update(); // updates
         if(times.getElapsed() > 100) {
             canvas.drawBitmap(level1, 0, 0, new Paint());
         }
         addGround(); // adds enemy to ground
+
+        update(); // updates
         Log.d("t", "Current Time elapsed " + times.getElapsed());
         if(checkTime()){ //Checks time if it is more than alloted, will display the end winning screen.
             try {
@@ -181,20 +190,17 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         // Get touch coordinates
-        float touchX = event.getX();
-        float touchY = event.getY();
+        int touchX = (int) event.getX();
+        int touchY = (int) event.getY();
 
         // Check if the touch event occurred on the sledge image
         if (event.getAction() == MotionEvent.ACTION_DOWN && !sledgeClicked) {
-            if (touchX >= xx && touchX <= xx + enemybpm.getWidth() &&
-                    touchY >= 0 && touchY <= enemybpm.getHeight()) {
-                // If the sledge is clicked, remove it from the list
-                sledgeClicked = true;
+            if () {
                 deleteSledge();
-                Log.d("touchSle", "Touched Sledge!!");
+                Log.d("touchSle", "Touched rect!!");
             }
         }
-        Log.d("noTouSle", "Did NOT Touch Sledge  X: " + touchX + " | Y: " + touchY);
+        Log.d("noTouSle", "Did NOT Touch rect  X: " + touchX + " | Y: " + touchY);
         return true;
     }
 
