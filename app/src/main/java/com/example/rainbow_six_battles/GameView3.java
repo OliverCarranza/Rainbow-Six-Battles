@@ -27,7 +27,7 @@ import android.view.View;
 import java.util.Random;
 
 public class GameView3 extends SurfaceView implements Callback, View.OnTouchListener {
-    public static int globalxSpeed = 20; //changes speed of enemy sprite
+    public static int globalxSpeed = 22; //changes speed of enemy sprite
     private int xx = 0;
     private GameLoopThread gameLoopThread; //changes framerate
     private SurfaceHolder holder;
@@ -110,7 +110,7 @@ public class GameView3 extends SurfaceView implements Callback, View.OnTouchList
                 for (i = enemyList.size(); i > 0; i--) {
                     int coinX = enemyList.get(i - 1).getX();
                     if (coinX < -Enemy.width) {
-                        endGameBool = true;
+                        endGameBool = true; // call for defeat
                         enemyList.remove(i - 1);
                         enemyList.add(new Enemy(this, enemybpm, coinX + this.getWidth() + Enemy.width, r));
                         //add the code for switching screen HERE
@@ -126,16 +126,18 @@ public class GameView3 extends SurfaceView implements Callback, View.OnTouchList
     //drawing objects and updating screen with new items
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
         update(); // updates
         if (times.getElapsed() > 100) {
             canvas.drawBitmap(level3, 0, 0, new Paint());
         }
-        if (endGameBool) {
+
+        if (endGameBool == true) {
             canvas.drawBitmap(defeatImg, 0, 0, new Paint());
             deleteSledge();
-
             Log.d("endGame", "END GAME GAME ENDED YOU LOST");
         }
+
         if (checkEnemyTime()) {
             addGround(); // adds enemy to ground
         }
@@ -158,7 +160,6 @@ public class GameView3 extends SurfaceView implements Callback, View.OnTouchList
             spawnTime = new Timer();
             return true;
         }
-
         return false;
     }
 
@@ -175,11 +176,10 @@ public class GameView3 extends SurfaceView implements Callback, View.OnTouchList
 
     private void endGame() {
         // sledge removed from array
-        for (int i = 0; i < enemyList.size(); i++) {
-            enemyList.remove(i);
-            endGameBool = true;
-            deleteEnemy();
-        }
+//        for (int i = 0; i < enemyList.size(); i++) {
+//            enemyList.remove(i);
+        deleteSledge();
+//        }
     }
 
     @Override
