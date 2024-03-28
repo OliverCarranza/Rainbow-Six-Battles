@@ -131,10 +131,11 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
                 for (i = enemyList.size(); i > 0; i--) {
                     int coinX = enemyList.get(i - 1).getX();
                     if (coinX < -Enemy.width) {
+                        endGameBool = true;
                         enemyList.remove(i - 1);
                         enemyList.add(new Enemy(this, enemybpm, coinX + this.getWidth() + Enemy.width, r));
                         //add the code for switching screen HERE
-                        endGameBool = true;
+
                     }
                 }
             } catch (Exception e) {
@@ -151,8 +152,9 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
             canvas.drawBitmap(level1, 0, 0, new Paint());
         }
         if(endGameBool){
+            canvas.drawBitmap(defeatImg, 0, 0, new Paint());
             deleteSledge();
-            canv.drawBitmap(defeatImg, 0, 0, new Paint());
+
             Log.d("endGame", "END GAME GAME ENDED YOU LOST");
         }
         if(checkEnemyTime()){
@@ -160,7 +162,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
         }
 
         Log.d("t", "Current Time elapsed " + times.getElapsed());
-        if(checkTime()){ //Checks time if it is more than alloted, will display the end winning screen.
+        if(checkTime() && !endGameBool){ //Checks time if it is more than alloted, will display the end winning screen.
             endGame();
             canvas.drawBitmap(endImage, 0, 0, new Paint());
         }
@@ -235,7 +237,7 @@ public class GameView extends SurfaceView implements Callback, View.OnTouchListe
             Enemy enemy = enemyList.get(i);
             if (enemy.getBitmap() == enemybpm) {
                 enemyList.remove(i);
-                break; // Exit loop once sledge is removed
+                //break; // Exit loop once sledge is removed
             }
         }
         Log.d("delSle", "Deleted Sledge!!");
